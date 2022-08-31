@@ -20,6 +20,7 @@ function App() {
         res => {
           setResults(res);
           setIsLoading(false);
+          setErrorMessage('')
         },
         message => {
           setErrorMessage(message);

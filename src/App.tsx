@@ -1,47 +1,24 @@
-import React, { useState } from "react";
-import { fetchPeople } from "./api";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Example1 from "./example1";
 import "./App.css";
 
-export interface Person {
-  name: string;
-  homeworld: string;
-}
-
-function App() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState<Person[]>([]);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  function fetchData() {
-    setIsLoading(true);
-    fetchPeople()
-      .then((r) => r.results)
-      .then(
-        (res) => {
-          setResults(res);
-          setIsLoading(false);
-          setErrorMessage("");
-        },
-        (message) => {
-          setErrorMessage(message);
-          setIsLoading(false);
-        }
-      );
-  }
-
+export default function App() {
   return (
-    <div className="App">
-      <button onClick={() => fetchData()}>Fetch</button>
-      {isLoading ? <p>Loading</p> : null}
-      {!isLoading && !errorMessage ? (
-        <ul>
-          {results &&
-            results.map((person, index) => <li key={index}>{person.name}</li>)}
-        </ul>
-      ) : null}
-      {!isLoading && errorMessage ? <p>{errorMessage}</p> : null}
-    </div>
+    <Router>
+      <div>
+        <nav>
+          <ul className="inline">
+            <li>
+              <Link to="/example1">Example 1</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route path="/example1" element={<Example1 />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
-
-export default App;

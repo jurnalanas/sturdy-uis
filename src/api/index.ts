@@ -1,4 +1,4 @@
-import { people, planets } from './mock-data';
+import { people, planets } from "./mock-data";
 
 function randomizedDelay<T>(maxDelay: number, callback: () => T): Promise<T> {
   return new Promise<T>((resolve, reject) => {
@@ -11,7 +11,7 @@ function randomizedDelay<T>(maxDelay: number, callback: () => T): Promise<T> {
 function randomizedError<T>(errorRate: number, callback: () => T): Promise<T> {
   if (Math.random() < errorRate) {
     return Promise.reject(
-      '500 Error!  I sense a great disturbance in the network.'
+      "500 Error!  I sense a great disturbance in the network."
     );
   } else {
     return Promise.resolve(callback());
@@ -24,20 +24,20 @@ const DEFAULT_ERROR_RATE = 0.5;
 export function mockFetch<T>(
   { maxDelay, errorRate } = {
     maxDelay: DEFAULT_MAX_DELAY,
-    errorRate: DEFAULT_ERROR_RATE
+    errorRate: DEFAULT_ERROR_RATE,
   },
   callback: () => T
 ): Promise<T> {
-  console.log('Starting mockFetch of ' + callback.name);
+  console.log("Starting mockFetch of " + callback.name);
   return randomizedDelay(maxDelay, () => callback())
-    .then(result => randomizedError(errorRate, () => result))
+    .then((result) => randomizedError(errorRate, () => result))
     .then(
-      result => {
-        console.log('Successful fetch of ' + callback.name);
+      (result) => {
+        console.log("Successful fetch of " + callback.name);
         return result;
       },
-      error => {
-        console.log('Error fetching ' + callback.name);
+      (error) => {
+        console.log("Error fetching " + callback.name);
         throw error;
       }
     );
@@ -49,7 +49,7 @@ function getEmptyResponse() {
 export function fetchPeople(
   { maxDelay, errorRate } = {
     maxDelay: DEFAULT_MAX_DELAY,
-    errorRate: DEFAULT_ERROR_RATE
+    errorRate: DEFAULT_ERROR_RATE,
   }
 ) {
   function getPeople() {
@@ -61,7 +61,7 @@ export function fetchPeople(
 export function fetchPlanets(
   { maxDelay, errorRate } = {
     maxDelay: DEFAULT_MAX_DELAY,
-    errorRate: DEFAULT_ERROR_RATE
+    errorRate: DEFAULT_ERROR_RATE,
   }
 ) {
   function getPlanets() {

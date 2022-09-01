@@ -1,10 +1,10 @@
-import { useMachine } from '@xstate/react';
-import React, { useState } from 'react';
-import { fetchPeople, fetchPlanets } from './api';
-import { List } from './List';
-import './App.css';
-import { matchingMachine } from './machines/matching';
-import { forceMachine } from './machines/force';
+import { useMachine } from "@xstate/react";
+import React, { useState } from "react";
+import { fetchPeople, fetchPlanets } from "./api";
+import { List } from "./List";
+import "./App.css";
+import { matchingMachine } from "./machines/matching";
+import { forceMachine } from "./machines/force";
 
 export interface Person {
   name: string;
@@ -14,20 +14,20 @@ export interface Person {
 function App() {
   const [matchingState, sendToMatchingMachine] = useMachine(matchingMachine, {
     guards: {
-      isCorrect: ctx => {
+      isCorrect: (ctx) => {
         return ctx.topSelectedItem.homeworld === ctx.bottomSelectedItem.url;
-      }
-    }
+      },
+    },
   });
 
   const [darkSidePower, setDarkSidePower] = useState<number>(0);
   const [forceState, sendToForceMachine] = useMachine(forceMachine, {
     activities: {
-      theDarknessGrows: ctx => {
+      theDarknessGrows: (ctx) => {
         // entering dark state
         setDarkSidePower(10);
         const interval = setInterval(
-          () => setDarkSidePower(power => power + 10),
+          () => setDarkSidePower((power) => power + 10),
           600
         );
         return () => {
@@ -35,31 +35,31 @@ function App() {
           setDarkSidePower(0);
           clearInterval(interval);
         };
-      }
-    }
+      },
+    },
   });
 
   return (
-    <div className='App'>
-      {matchingState.matches('quiz.answering') ? (
+    <div className="App">
+      {matchingState.matches("quiz.answering") ? (
         <>
-          <button onClick={() => sendToMatchingMachine({ type: 'CONTINUE' })}>
+          <button onClick={() => sendToMatchingMachine({ type: "CONTINUE" })}>
             Continue
           </button>
-          {forceState.matches('light') ? (
-            <button onClick={() => sendToForceMachine({ type: 'CORRUPT' })}>
+          {forceState.matches("light") ? (
+            <button onClick={() => sendToForceMachine({ type: "CORRUPT" })}>
               Come to the Dark Side
             </button>
           ) : (
-            <button onClick={() => sendToForceMachine({ type: 'REDEEM' })}>
+            <button onClick={() => sendToForceMachine({ type: "REDEEM" })}>
               Go Back to the Light Side
             </button>
           )}
           <List
             fetchData={fetchPeople}
             selectedItem={matchingState.context.topSelectedItem}
-            onSelection={selectedItem => {
-              sendToMatchingMachine({ type: 'SELECT_TOP', selectedItem });
+            onSelection={(selectedItem) => {
+              sendToMatchingMachine({ type: "SELECT_TOP", selectedItem });
             }}
             darkSidePower={darkSidePower}
           ></List>
@@ -67,37 +67,37 @@ function App() {
           <List
             fetchData={fetchPlanets}
             selectedItem={matchingState.context.bottomSelectedItem}
-            onSelection={selectedItem => {
-              sendToMatchingMachine({ type: 'SELECT_BOTTOM', selectedItem });
+            onSelection={(selectedItem) => {
+              sendToMatchingMachine({ type: "SELECT_BOTTOM", selectedItem });
             }}
             darkSidePower={darkSidePower}
           ></List>
         </>
       ) : null}
-      {matchingState.matches('quiz.verifying') ? (
+      {matchingState.matches("quiz.verifying") ? (
         <>
           <p>
-            You chose{' '}
+            You chose{" "}
             {matchingState.context.topSelectedItem &&
-              matchingState.context.topSelectedItem.name}{' '}
-            and{' '}
+              matchingState.context.topSelectedItem.name}{" "}
+            and{" "}
             {matchingState.context.bottomSelectedItem &&
               matchingState.context.bottomSelectedItem.name}
           </p>
           <button
-            onClick={() => sendToMatchingMachine({ type: 'CHANGE_ANSWERS' })}
+            onClick={() => sendToMatchingMachine({ type: "CHANGE_ANSWERS" })}
           >
             Change Answers
           </button>
-          <button onClick={() => sendToMatchingMachine({ type: 'SUBMIT' })}>
+          <button onClick={() => sendToMatchingMachine({ type: "SUBMIT" })}>
             Submit
           </button>
         </>
       ) : null}
-      {matchingState.matches('submitted.correct') ? (
+      {matchingState.matches("submitted.correct") ? (
         <p>The Force is strong with this one.</p>
       ) : null}
-      {matchingState.matches('submitted.incorrect') ? (
+      {matchingState.matches("submitted.incorrect") ? (
         <p>Do or do not. There is no try.</p>
       ) : null}
     </div>

@@ -1,4 +1,4 @@
-import { Machine } from 'xstate';
+import { Machine } from "xstate";
 
 // The hierarchical (recursive) schema for the states
 export interface ForceSchema {
@@ -9,29 +9,29 @@ export interface ForceSchema {
 }
 
 // The events that the machine handles
-export type ForceEvents = { type: 'CORRUPT' } | { type: 'REDEEM' };
+export type ForceEvents = { type: "CORRUPT" } | { type: "REDEEM" };
 
 // The context (extended state) of the machine
 export interface ForceContext {}
 
 export const forceMachine = Machine<ForceContext, ForceSchema, ForceEvents>(
   {
-    id: 'force',
-    initial: 'light',
+    id: "force",
+    initial: "light",
     context: {},
     states: {
       light: {
         on: {
-          CORRUPT: 'dark'
-        }
+          CORRUPT: "dark",
+        },
       },
       dark: {
-        activities: ['theDarknessGrows'],
+        activities: ["theDarknessGrows"],
         on: {
-          REDEEM: 'light'
-        }
-      }
-    }
+          REDEEM: "light",
+        },
+      },
+    },
   },
   {}
 );

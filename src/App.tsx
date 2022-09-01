@@ -6,6 +6,7 @@ import Example2 from "./example2";
 import Example3 from "./example3";
 
 import "./App.css";
+import Example4 from "./example4";
 
 export default function App() {
   return (
@@ -25,6 +26,9 @@ export default function App() {
             <li>
               <Link to="/example3">Example 3: Guard</Link>
             </li>
+            <li>
+              <Link to="/example4">Example 4</Link>
+            </li>
           </ul>
         </nav>
 
@@ -33,6 +37,7 @@ export default function App() {
           <Route path="/example1-end" element={<Example1End />} />
           <Route path="/example2" element={<Example2 />} />
           <Route path="/example3" element={<Example3 />} />
+          <Route path="/example4" element={<Example4 />} />
         </Routes>
       </div>
     </Router>

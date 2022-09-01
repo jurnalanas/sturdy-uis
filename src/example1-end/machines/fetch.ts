@@ -9,7 +9,10 @@ interface FetchStates {
   };
 }
 
-type FetchMachineEvents = { type: "FETCH" };
+type FetchMachineEvents =
+  | { type: "FETCH" }
+  | { type: "RESOLVE"; results: any[] }
+  | { type: "REJECT"; message: string };
 
 interface FetchContext {
   results: any[];
@@ -24,6 +27,7 @@ export const fetchMachine = Machine<
   {
     id: "fetch",
     initial: "idle",
+    // context: to store data
     context: {
       results: [],
       message: "",
@@ -35,13 +39,15 @@ export const fetchMachine = Machine<
         },
       },
       pending: {
-        invoke: {
-          src: "fetchData",
-          onDone: { target: "successful", actions: ["setResults"] },
-          onError: { target: "failed", actions: ["setMessage"] },
+        entry: ["fetchData"],
+        on: {
+          // target state in an object, so you can add `actions` to it
+          RESOLVE: { target: "successful", actions: ["setResults"] },
+          REJECT: { target: "failed", actions: ["setMessage"] },
         },
       },
       failed: {
+        // if no actions needed, can just put it in a string
         on: {
           FETCH: "pending",
         },
@@ -56,10 +62,10 @@ export const fetchMachine = Machine<
   {
     actions: {
       setResults: assign((ctx, event: any) => ({
-        results: event.data,
+        results: event.results,
       })),
       setMessage: assign((ctx, event: any) => ({
-        message: event.data,
+        message: event.message,
       })),
     },
   }

@@ -2,9 +2,10 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Example1 from "./example1";
 import Example1End from "./example1-end";
+import Example2 from "./example2";
+import Example3 from "./example3";
 
 import "./App.css";
-import Example2 from "./example2";
 
 export default function App() {
   return (
@@ -21,6 +22,9 @@ export default function App() {
             <li>
               <Link to="/example2">Example 2: Invoke</Link>
             </li>
+            <li>
+              <Link to="/example3">Example 3: Guard</Link>
+            </li>
           </ul>
         </nav>
 
@@ -28,6 +32,7 @@ export default function App() {
           <Route path="/example1" element={<Example1 />} />
           <Route path="/example1-end" element={<Example1End />} />
           <Route path="/example2" element={<Example2 />} />
+          <Route path="/example3" element={<Example3 />} />
         </Routes>
       </div>
     </Router>

@@ -1,4 +1,4 @@
-import { Machine, assign } from 'xstate';
+import { Machine, assign } from "xstate";
 
 interface FetchStates {
   states: {
@@ -9,7 +9,7 @@ interface FetchStates {
   };
 }
 
-type FetchMachineEvents = { type: 'FETCH' };
+type FetchMachineEvents = { type: "FETCH" };
 
 interface FetchContext {
   results: any[];
@@ -22,45 +22,45 @@ export const fetchMachine = Machine<
   FetchMachineEvents
 >(
   {
-    id: 'fetch',
-    initial: 'idle',
+    id: "fetch",
+    initial: "idle",
     context: {
       results: [],
-      message: ''
+      message: "",
     },
     states: {
       idle: {
         on: {
-          FETCH: 'pending'
-        }
+          FETCH: "pending",
+        },
       },
       pending: {
         invoke: {
-          src: 'fetchData',
-          onDone: { target: 'successful', actions: ['setResults'] },
-          onError: { target: 'failed', actions: ['setMessage'] }
-        }
+          src: "fetchData",
+          onDone: { target: "successful", actions: ["setResults"] },
+          onError: { target: "failed", actions: ["setMessage"] },
+        },
       },
       failed: {
         on: {
-          FETCH: 'pending'
-        }
+          FETCH: "pending",
+        },
       },
       successful: {
         on: {
-          FETCH: 'pending'
-        }
-      }
-    }
+          FETCH: "pending",
+        },
+      },
+    },
   },
   {
     actions: {
       setResults: assign((ctx, event: any) => ({
-        results: event.data
+        results: event.data,
       })),
       setMessage: assign((ctx, event: any) => ({
-        message: event.data
-      }))
-    }
+        message: event.data,
+      })),
+    },
   }
 );

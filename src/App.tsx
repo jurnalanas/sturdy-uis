@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { fetchPeople } from './api';
-import './App.css';
+import React, { useState } from "react";
+import { fetchPeople } from "./api";
+import "./App.css";
 
 export interface Person {
   name: string;
@@ -10,19 +10,19 @@ export interface Person {
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<Person[]>([]);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   function fetchData() {
     setIsLoading(true);
     fetchPeople()
-      .then(r => r.results)
+      .then((r) => r.results)
       .then(
-        res => {
+        (res) => {
           setResults(res);
           setIsLoading(false);
-          setErrorMessage('')
+          setErrorMessage("");
         },
-        message => {
+        (message) => {
           setErrorMessage(message);
           setIsLoading(false);
         }
